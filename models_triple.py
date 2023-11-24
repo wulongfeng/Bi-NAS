@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from torch.autograd import Variable
-import math
 from models_binary import OPS, constrain
 from collections import defaultdict
 '''

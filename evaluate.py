@@ -5,7 +5,6 @@ import math
 import random
 from tqdm import tqdm
 import time
-from sklearn.preprocessing import StandardScaler
 
 def evaluate_nar(model, data):
 	pred = dict()

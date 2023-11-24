@@ -3,27 +3,17 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from torch.autograd import Variable
-import math
 from collections import defaultdict
 
-#PRIMITIVES_BINARY = ['plus', 'multiply', 'max', 'min', 'concat']
-#PRIMITIVES_NAS = [0, 2, 4, 8, 16]
-#SPACE_NAS = pow(len(PRIMITIVES_NAS), 5)
 
 PRIMITIVES_BINARY = ['plus', 'multiply', 'concat']
 PRIMITIVES_NAS = [0, 2, 4]
 SPACE_NAS = pow(len(PRIMITIVES_NAS), 3)
 
-#PRIMITIVES_BINARY = ['multiply']
-#PRIMITIVES_NAS = [0]
-#SPACE_NAS = pow(len(PRIMITIVES_NAS), 1)
-
 
 OPS = {
 	'plus': lambda p, q: p + q,
 	'multiply': lambda p, q: p * q,
-	'max': lambda p, q: torch.max(torch.stack((p, q)), dim=0)[0],
-	'min': lambda p, q: torch.min(torch.stack((p, q)), dim=0)[0],
 	'concat': lambda p, q: torch.cat([p, q], dim=-1),
 	'norm_0': lambda p: torch.ones_like(p),
 	'norm_0.5': lambda p: torch.sqrt(torch.abs(p) + 1e-7),
@@ -75,10 +65,8 @@ class Virtue(nn.Module):
 		neg_score = self.forward(user_batch, user_feature_batch, neg_item_batch, neg_item_feature_batch)
 		# compute loss
 		loss = - torch.nn.functional.logsigmoid(pos_score - neg_score).mean()
-
 		#print ("Logits: ", (pos_score - neg_score)[0])
 		return loss
-
 
 
 class Network(Virtue):
@@ -283,9 +271,6 @@ class Network_NAR(Virtue):
 		self.w2v = w2v
 		self.feat_dim = feat_dim
 		self.att = att
-		#self.embed_user = nn.Embedding(num_users, self.factor_num)
-		#self.embed_item = nn.Embedding(num_items, self.factor_num)
-
 		self.atten_fusion = nn.Linear(feat_dim*2, feat_dim, bias=False)
 
 		self.word_feat = torch.FloatTensor(w2v).cuda()
@@ -311,21 +296,10 @@ class Network_NAR(Virtue):
 
 		self.mlp_p = nn.Linear(self.embedding_dim, self.embedding_dim, bias=False)
 		self.mlp_q = nn.Linear(self.embedding_dim, self.embedding_dim, bias=False)
-
-		# self.mlp_p = nn.Sequential(
-		# 	nn.Linear(1, 8),
-		# 	nn.Tanh(),
-		# 	nn.Linear(8, 1)).cuda()
-		# self.mlp_q = nn.Sequential(
-		# 	nn.Linear(1, 8),
-		# 	nn.Tanh(),
-		# 	nn.Linear(8, 1)).cuda()
 		self._arch_parameters = {}
 		self._arch_parameters['mlp'] = {}
 		self._arch_parameters['mlp']['p'] = self.mlp_p
 		self._arch_parameters['mlp']['q'] = self.mlp_q
-		#self._arch_parameters['binary'] = Variable(torch.ones(len(PRIMITIVES_BINARY),
-		#													  dtype=torch.float, device='cuda') / 2, requires_grad=True)
 		self._arch_parameters['binary'] = Variable(torch.ones(len(PRIMITIVES_BINARY), dtype=torch.float, device='cuda'), requires_grad=True)
 		self._arch_parameters['binary'].data.add_(
 			torch.randn_like(self._arch_parameters['binary'])*1e-3)

@@ -3,9 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from torch.autograd import Variable
-import math
 from models_binary import OPS, constrain
-from models_triple import ops_triple
 from collections import defaultdict
 '''
 same dimension

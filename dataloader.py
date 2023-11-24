@@ -20,7 +20,6 @@ folder_dict = {}
 folder_dict['video'] = 'Amazon_Instant_Video/'
 folder_dict['Beauty'] = 'Beauty/'
 folder_dict['Clothing'] = 'Clothing_Shoes_and_Jewelry/'
-# folder_dict['Music'] = 'Digital_Music/'
 folder_dict['Musical'] = 'Musical_Instruments/'
 
 

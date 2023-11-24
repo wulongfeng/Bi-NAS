@@ -1,16 +1,9 @@
 import math
-import pickle
-import random
-import time
 from collections import defaultdict
 
 import torch
-import numpy as np
-from torch import optim
-from tqdm import tqdm
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.nn.parameter import Parameter
 
 
 class NAR(nn.Module):
@@ -23,7 +16,6 @@ class NAR(nn.Module):
         self.q_item_proj = nn.Linear(factor_num, factor_num, bias=False)
 
         self.atten_fusion = nn.Linear(item_feat_dim*2, item_feat_dim, bias=False)
-
 
         self.word_feat = torch.FloatTensor(w2v_feat)
         self.word_feat = self.word_feat.to(args.device)
@@ -44,7 +36,6 @@ class NAR(nn.Module):
         self.embed_user.weight.requires_grad = True
         self.embed_item.weight.requires_grad = True
 
-
     def scaled_dot_product(self, input_embed, mask=None):
         q, k, v = self.q_proj(input_embed), self.k_proj(input_embed), self.v_proj(input_embed)
 
@@ -57,7 +48,6 @@ class NAR(nn.Module):
         values = torch.matmul(v, attention)
 
         return values, attention
-
 
     def forward(self, user, user_feat, item, item_feat):
         if self.args.norm_feat:
@@ -96,7 +86,6 @@ class NAR(nn.Module):
             output = (user_factor * item_factor).sum(dim=1)
         return output
 
-
     def vis(self, data):
         train_users = data.train_user_all
         user_feat = data.user_feature_all[train_users]
@@ -115,7 +104,6 @@ class NAR(nn.Module):
             user_att_dict[user.item()] = user_fused_att[idx]
 
         return user_att_dict
-
 
     def compute_loss(self, user_batch, user_feature_batch, pos_item_batch, pos_item_feature_batch, neg_item_batch, neg_item_feature_batch, epoch=None):
         # compute positive socre
