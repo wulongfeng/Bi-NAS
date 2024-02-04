@@ -9,4 +9,7 @@ To enable effective explanations for the recommender system, we introduce a Bi-l
 # Example to run proposed method
 For the pre-trained word representation model, we utilize glove.6B.300d.txt, please download it [here](https://nlp.stanford.edu/projects/glove/) and put it in the data folder.
 
+```bash
 ./example.sh
+```
+
