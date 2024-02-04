@@ -47,7 +47,7 @@ parser.add_argument('--input_dim', type=int, default=2, help='the dimension of i
 parser.add_argument('--att_mode', type=str, default='0', help='the way of cross-attention: [0, 1, 2, 3]')
 parser.add_argument('--gpu', type=int, default=0, help='gpu device id')
 
-parser.add_argument('--explain_evaluate', type=int, default=1, help='evaluate the explanation performance')
+parser.add_argument('--explain_evaluate', type=int, default=0, help='evaluate the explanation performance')
 parser.add_argument('--search_epochs', type=int, default=20, help='num of searching epochs')
 parser.add_argument('--save', type=str, default='EXP')
 parser.add_argument('--save_vis', type=int, default=1)
@@ -147,7 +147,7 @@ def main():
 		else:
 			model = Network_NAR_Quadruple(data.user_num, data.item_num, args.dim, args.weight_decay, data.w2v_feat_np, data.user_feat_dim, att_w).cuda()
 
-		model_save_path = parent_path+'/ExplainableRec/saved_model/best_{}_{}.pkl'.format(args.model_name, args.dataset_str)
+		model_save_path = dir_path+'/saved_model/best_{}_{}.pkl'.format(args.model_name, args.dataset_str)
 		model.load_state_dict(torch.load(model_save_path))
 		model = model.to(args.device)
 		vis_func(args, data, model)

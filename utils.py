@@ -18,8 +18,7 @@ from torch.utils.tensorboard import SummaryWriter
 from model_NAR import NAR
 from datetime import datetime
 
-
-parent_path = '/home/longfeng/projects/projects_laptop/NAS/ExplainableRec'
+parent_path = os.path.dirname(os.path.realpath(__file__))
 
 
 def create_exp_dir(path, scripts_to_save=None):
@@ -326,7 +325,7 @@ def load_word_embedding(debug=False):
     if debug:
         return {}, np.zeros((10000, 300))
     else:
-        lines = open('/home/longfeng/projects/projects_laptop/NAS/ExplainableRec/data/glove.6B.300d.txt').readlines()
+        lines = open(os.path.join(parent_path, 'data/glove.6B.300d.txt')).readlines()
         data = []
         word_dict = {}
         for idx, line in enumerate(lines):

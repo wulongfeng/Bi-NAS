@@ -27,8 +27,8 @@ class DataLoader():
     def __init__(self, args):
         self.args = args
         self.path = args.data_path + folder_dict[args.dataset_str]
-        print("data_path:{}".format(args.data_path))
-        print(self.path)
+        # print("data_path:{}".format(args.data_path))
+        # print(self.path)
         self.statistics = dict()
         self.user_id_dict = pickle.load(open(self.path + "user_id_dict", "rb"))
         self.item_id_dict = pickle.load(open(self.path + "item_id_dict", "rb"))
