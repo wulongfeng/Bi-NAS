@@ -23,10 +23,11 @@ from dataloader import DataLoader
 from utils import Evaluate, vis_func, save_model_func
 dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_path = os.path.abspath(os.path.join(dir_path, os.pardir))
-
+#print("dir path:{}".format(dir_path))
+#print("parent path:{}".format(parent_path))
 parser = argparse.ArgumentParser(description="Search.")
 parser.add_argument('--data', type=str, default='data', help='location of the data corpus')
-parser.add_argument("--data_path", type=str, default=parent_path+"/data/", help="data path")
+parser.add_argument("--data_path", type=str, default=dir_path+"/data/", help="data path")
 parser.add_argument('--dataset_str', type=str, default='Musical', help='video, Beauty, Clothing, Music, Musical')
 parser.add_argument('--user_feat_type', type=str, default='smooth', help='count, smooth, smooth_imputed')
 parser.add_argument("--feat_selection_num", type=int, default=350, help="recommending how many keep at processing")
